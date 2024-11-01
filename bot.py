@@ -7,6 +7,7 @@ from aiohttp import web
 import logging
 import config
 from config import TOKEN, WEBHOOK_URL, ADMIN_ID_LIST
+from db import create_db_and_tables
 
 
 bot = Bot(TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -15,7 +16,9 @@ dp = Dispatcher(storage=MemoryStorage())
 logging.basicConfig(level=logging.INFO)
 
 async def on_startup(bot: Bot):
+  await create_db_and_tables()
   await bot.set_webhook(WEBHOOK_URL)
+
   for admin in ADMIN_ID_LIST:
     try:
       await bot.send_message(admin, 'Bot is working')
