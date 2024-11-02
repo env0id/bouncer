@@ -8,6 +8,7 @@ from config import SUPPORT_LINK, COMMUNITY_LINK
 from services.user import UserService
 from utils.stripe_api import create_customer, create_checkout_session, get_prices
 from handlers.common import get_back_to_menu_markup, get_back_to_menu_button
+from handlers.user.select_language import  create_callback_language
 
 start_router = Router()
 
@@ -48,6 +49,7 @@ async def start(message: Union[types.Message, types.CallbackQuery]):
   main_keyboard_builder.button(text=translations["faq"], callback_data=create_callback_start(1))
   main_keyboard_builder.button(text=translations["support"], callback_data=create_callback_start(2))
   main_keyboard_builder.button(text=translations["community"], url=COMMUNITY_LINK)
+  main_keyboard_builder.button(text=translations["language"], callback_data=create_callback_language(0))
   main_keyboard_builder.adjust(1)
   if isinstance(message, types.Message):
     await message.answer(translations["hello"], reply_markup=main_keyboard_builder.as_markup())
